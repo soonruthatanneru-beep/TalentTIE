@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Talent Tie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ff00cc,#3333ff,#00ffcc);
+    color:white;
+}
+
+header{
+    padding:20px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    background:rgba(0,0,0,0.3);
+}
+
+.container{
+    display:grid;
+    grid-template-columns:220px auto;
+    min-height:100vh;
+}
+
+.sidebar{
+    background:rgba(0,0,0,0.4);
+    padding:20px;
+}
+
+.sidebar button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:none;
+    border-radius:8px;
+    background:#00e5ff;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.sidebar button:hover{
+    background:#00bcd4;
+}
+
+.content{
+    padding:30px;
+}
+
+.card{
+    background:rgba(255,255,255,0.2);
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:6px 0;
+    border-radius:6px;
+    border:none;
+}
+
+button.action{
+    background:#4caf50;
+    color:white;
+    padding:8px 15px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button.action:hover{
+    background:#2e7d32;
+}
+
+.stat{
+    font-weight:bold;
+    color:yellow;
+}
+
+@media(max-width:768px){
+    .container{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>🌟 Talent Tie – Connect • Learn • Grow</header>
+
+<div class="container">
+
+<div class="sidebar">
+    <button onclick="show('profile')">Profile</button>
+    <button onclick="show('network')">My Network</button>
+    <button onclick="show('match')">Match</button>
+    <button onclick="show('settings')">Settings</button>
+</div>
+
+<div class="content">
+
+<!-- PROFILE -->
+<div id="profile" class="card">
+    <h2>👤 My Profile</h2>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="haveSkill" placeholder="Skill You Have">
+    <input type="text" id="wantSkill" placeholder="Skill You Want">
+    <button class="action" onclick="saveProfile()">Save</button>
+
+    <p class="stat">Followers: <span id="followers">120</span></p>
+    <p class="stat">Profile Visitors: <span id="visitors">35</span></p>
+</div>
+
+<!-- NETWORK -->
+<div id="network" class="card" style="display:none;">
+    <h2>🌐 My Skill Network</h2>
+
+    <h3>📘 Learning From:</h3>
+    <ul id="learningList"></ul>
+
+    <h3>📗 Teaching To:</h3>
+    <ul id="teachingList"></ul>
+</div>
+
+<!-- MATCH -->
+<div id="match" class="card" style="display:none;">
+    <h2>🔄 Find Skill Match</h2>
+    <input type="text" id="otherName" placeholder="Other Student Name">
+    <input type="text" id="otherHave" placeholder="Their Skill">
+    <input type="text" id="otherWant" placeholder="Their Wanted Skill">
+    <button class="action" onclick="checkMatch()">Check Match</button>
+    <p id="matchResult"></p>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings" class="card" style="display:none;">
+    <h2>⚙ Settings</h2>
+
+    <h3>Edit Profile</h3>
+    <input type="text" id="editName" placeholder="Change Name">
+    <button class="action" onclick="updateName()">Update Name</button>
+
+    <h3>Privacy</h3>
+    <label>
+        <input type="checkbox" id="privateMode">
+        Make Profile Private
+    </label>
+
+    <h3>Account Control</h3>
+    <button class="action" onclick="increaseFollowers()">Increase Followers</button>
+</div>
+
+</div>
+</div>
+
+<script>
+let user = {};
+let followers = 120;
+let visitors = 35;
+
+function show(section){
+    document.querySelectorAll(".content .card").forEach(card=>{
+        card.style.display="none";
+    });
+    document.getElementById(section).style.display="block";
+}
+
+function saveProfile(){
+    user.name=document.getElementById("name").value;
+    user.have=document.getElementById("haveSkill").value.toLowerCase();
+    user.want=document.getElementById("wantSkill").value.toLowerCase();
+    alert("Profile Saved 🎉");
+}
+
+function checkMatch(){
+    let otherName=document.getElementById("otherName").value;
+    let otherHave=document.getElementById("otherHave").value.toLowerCase();
+    let otherWant=document.getElementById("otherWant").value.toLowerCase();
+
+    if(user.have===otherWant && user.want===otherHave){
+        document.getElementById("matchResult").innerHTML=
+        "🎉 Perfect Match with "+otherName;
+
+        document.getElementById("learningList").innerHTML+=
+        "<li>"+otherName+" (Teaching you "+otherHave+")</li>";
+
+        document.getElementById("teachingList").innerHTML+=
+        "<li>"+otherName+" (Learning "+user.have+" from you)</li>";
+    }
+    else{
+        document.getElementById("matchResult").innerHTML=
+        "❌ No mutual match found";
+    }
+}
+
+function updateName(){
+    let newName=document.getElementById("editName").value;
+    document.getElementById("name").value=newName;
+    alert("Name Updated ✅");
+}
+
+function increaseFollowers(){
+    followers+=5;
+    document.getElementById("followers").innerText=followers;
+}
+</script>
+
+</body>
+</html>
+
