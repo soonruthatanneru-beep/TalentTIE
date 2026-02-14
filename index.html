@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Talent Tie</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talent Tie - Smart Swap</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#ff00cc,#3333ff,#00ffcc);
+    font-family:Segoe UI;
+    background:linear-gradient(135deg,#ff00cc,#7928ca,#00c6ff);
     color:white;
 }
 
 header{
-    padding:20px;
     text-align:center;
+    padding:20px;
     font-size:28px;
     font-weight:bold;
     background:rgba(0,0,0,0.3);
@@ -22,7 +22,7 @@ header{
 
 .container{
     display:grid;
-    grid-template-columns:220px auto;
+    grid-template-columns:230px auto;
     min-height:100vh;
 }
 
@@ -37,13 +37,13 @@ header{
     margin:8px 0;
     border:none;
     border-radius:8px;
-    background:#00e5ff;
+    background:#00ffcc;
     font-weight:bold;
     cursor:pointer;
 }
 
 .sidebar button:hover{
-    background:#00bcd4;
+    background:#00e5ff;
 }
 
 .content{
@@ -61,8 +61,8 @@ input{
     width:100%;
     padding:10px;
     margin:6px 0;
-    border-radius:6px;
     border:none;
+    border-radius:6px;
 }
 
 button.action{
@@ -78,140 +78,186 @@ button.action:hover{
     background:#2e7d32;
 }
 
+.chat-box{
+    background:white;
+    color:black;
+    height:150px;
+    overflow-y:auto;
+    padding:10px;
+    border-radius:8px;
+}
+
 .stat{
     font-weight:bold;
     color:yellow;
 }
 
+.match{
+    background:#ff9800;
+    color:black;
+    padding:10px;
+    border-radius:8px;
+    margin:10px 0;
+    font-weight:bold;
+}
+
 @media(max-width:768px){
-    .container{
-        grid-template-columns:1fr;
-    }
+.container{grid-template-columns:1fr;}
 }
 </style>
 </head>
 
 <body>
 
-<header>🌟 Talent Tie – Connect • Learn • Grow</header>
+<header>🌟 Talent Tie – Smart Skill Swap</header>
 
 <div class="container">
 
 <div class="sidebar">
-    <button onclick="show('profile')">Profile</button>
-    <button onclick="show('network')">My Network</button>
-    <button onclick="show('match')">Match</button>
-    <button onclick="show('settings')">Settings</button>
+<button onclick="show('profile')">👤 Profile</button>
+<button onclick="show('match')">🔄 Add User</button>
+<button onclick="show('network')">🌐 Network</button>
+<button onclick="show('chat')">💬 Chat</button>
+<button onclick="show('settings')">⚙ Settings</button>
 </div>
 
 <div class="content">
 
 <!-- PROFILE -->
 <div id="profile" class="card">
-    <h2>👤 My Profile</h2>
-    <input type="text" id="name" placeholder="Your Name">
-    <input type="text" id="haveSkill" placeholder="Skill You Have">
-    <input type="text" id="wantSkill" placeholder="Skill You Want">
-    <button class="action" onclick="saveProfile()">Save</button>
+<h2>My Profile</h2>
+<input type="text" id="myName" placeholder="Your Name">
+<input type="text" id="myHave" placeholder="Skill You Have">
+<input type="text" id="myWant" placeholder="Skill You Want">
+<button class="action" onclick="saveMyProfile()">Save Profile</button>
 
-    <p class="stat">Followers: <span id="followers">120</span></p>
-    <p class="stat">Profile Visitors: <span id="visitors">35</span></p>
+<p class="stat">Followers: <span id="followers">150</span></p>
+<p class="stat">Visitors: <span id="visitors">45</span></p>
+</div>
+
+<!-- ADD OTHER USERS -->
+<div id="match" class="card" style="display:none;">
+<h2>Add Another User</h2>
+<input type="text" id="otherName" placeholder="Student Name">
+<input type="text" id="otherHave" placeholder="Skill They Have">
+<input type="text" id="otherWant" placeholder="Skill They Want">
+<button class="action" onclick="addUser()">Add & Check Match</button>
+
+<div id="matchResults"></div>
 </div>
 
 <!-- NETWORK -->
 <div id="network" class="card" style="display:none;">
-    <h2>🌐 My Skill Network</h2>
+<h2>My Network</h2>
 
-    <h3>📘 Learning From:</h3>
-    <ul id="learningList"></ul>
+<h3>📘 Learning From:</h3>
+<ul id="learningList"></ul>
 
-    <h3>📗 Teaching To:</h3>
-    <ul id="teachingList"></ul>
+<h3>📗 Teaching To:</h3>
+<ul id="teachingList"></ul>
 </div>
 
-<!-- MATCH -->
-<div id="match" class="card" style="display:none;">
-    <h2>🔄 Find Skill Match</h2>
-    <input type="text" id="otherName" placeholder="Other Student Name">
-    <input type="text" id="otherHave" placeholder="Their Skill">
-    <input type="text" id="otherWant" placeholder="Their Wanted Skill">
-    <button class="action" onclick="checkMatch()">Check Match</button>
-    <p id="matchResult"></p>
+<!-- CHAT -->
+<div id="chat" class="card" style="display:none;">
+<h2>Chat</h2>
+
+<label>
+<input type="checkbox" id="chatPermission" onchange="toggleChat()">
+Enable Chat
+</label>
+
+<div id="chatArea" style="display:none;">
+<div class="chat-box" id="chatBox"></div>
+<input type="text" id="msg" placeholder="Type message">
+<button class="action" onclick="sendMsg()">Send</button>
+</div>
 </div>
 
 <!-- SETTINGS -->
 <div id="settings" class="card" style="display:none;">
-    <h2>⚙ Settings</h2>
+<h2>Settings</h2>
 
-    <h3>Edit Profile</h3>
-    <input type="text" id="editName" placeholder="Change Name">
-    <button class="action" onclick="updateName()">Update Name</button>
+<input type="text" id="editName" placeholder="Change Name">
+<button class="action" onclick="updateName()">Update Name</button>
 
-    <h3>Privacy</h3>
-    <label>
-        <input type="checkbox" id="privateMode">
-        Make Profile Private
-    </label>
-
-    <h3>Account Control</h3>
-    <button class="action" onclick="increaseFollowers()">Increase Followers</button>
+<br><br>
+<label>
+<input type="checkbox"> Make Profile Private
+</label>
 </div>
 
 </div>
 </div>
 
 <script>
-let user = {};
-let followers = 120;
-let visitors = 35;
+
+let myProfile = {};
+let users = [];
 
 function show(section){
-    document.querySelectorAll(".content .card").forEach(card=>{
-        card.style.display="none";
-    });
-    document.getElementById(section).style.display="block";
+document.querySelectorAll(".content .card").forEach(c=>c.style.display="none");
+document.getElementById(section).style.display="block";
 }
 
-function saveProfile(){
-    user.name=document.getElementById("name").value;
-    user.have=document.getElementById("haveSkill").value.toLowerCase();
-    user.want=document.getElementById("wantSkill").value.toLowerCase();
-    alert("Profile Saved 🎉");
+function saveMyProfile(){
+myProfile.name=document.getElementById("myName").value;
+myProfile.have=document.getElementById("myHave").value.toLowerCase();
+myProfile.want=document.getElementById("myWant").value.toLowerCase();
+alert("Profile Saved 🎉");
 }
 
-function checkMatch(){
-    let otherName=document.getElementById("otherName").value;
-    let otherHave=document.getElementById("otherHave").value.toLowerCase();
-    let otherWant=document.getElementById("otherWant").value.toLowerCase();
+function addUser(){
 
-    if(user.have===otherWant && user.want===otherHave){
-        document.getElementById("matchResult").innerHTML=
-        "🎉 Perfect Match with "+otherName;
+let name=document.getElementById("otherName").value;
+let have=document.getElementById("otherHave").value.toLowerCase();
+let want=document.getElementById("otherWant").value.toLowerCase();
 
-        document.getElementById("learningList").innerHTML+=
-        "<li>"+otherName+" (Teaching you "+otherHave+")</li>";
+let newUser={name,have,want};
+users.push(newUser);
 
-        document.getElementById("teachingList").innerHTML+=
-        "<li>"+otherName+" (Learning "+user.have+" from you)</li>";
-    }
-    else{
-        document.getElementById("matchResult").innerHTML=
-        "❌ No mutual match found";
-    }
+if(myProfile.have===want && myProfile.want===have){
+
+document.getElementById("matchResults").innerHTML+=
+`<div class="match">🎉 ${myProfile.name} ↔ ${name} can swap skills!</div>`;
+
+document.getElementById("learningList").innerHTML+=
+`<li>${name} teaching you ${have}</li>`;
+
+document.getElementById("teachingList").innerHTML+=
+`<li>${name} learning ${myProfile.have} from you</li>`;
+
+}
+else{
+document.getElementById("matchResults").innerHTML+=
+`<div class="match">No match with ${name}</div>`;
+}
+
+}
+
+function toggleChat(){
+document.getElementById("chatArea").style.display=
+document.getElementById("chatPermission").checked?"block":"none";
+}
+
+function sendMsg(){
+let msg=document.getElementById("msg").value;
+if(msg!=""){
+document.getElementById("chatBox").innerHTML+=`<p><b>You:</b> ${msg}</p>`;
+document.getElementById("msg").value="";
+}
 }
 
 function updateName(){
-    let newName=document.getElementById("editName").value;
-    document.getElementById("name").value=newName;
-    alert("Name Updated ✅");
+let newName=document.getElementById("editName").value;
+document.getElementById("myName").value=newName;
+alert("Name Updated ✅");
 }
 
-function increaseFollowers(){
-    followers+=5;
-    document.getElementById("followers").innerText=followers;
-}
 </script>
 
 </body>
 </html>
+
+
+
 
